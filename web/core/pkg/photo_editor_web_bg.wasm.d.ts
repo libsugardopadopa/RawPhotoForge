@@ -15,6 +15,10 @@ export const webphotoeditor_new: (a: number, b: number, c: number, d: number, e:
 export const webphotoeditor_remove_mask: (a: number, b: number, c: number) => [number, number];
 export const webphotoeditor_save_jpeg: (a: number) => any;
 export const webphotoeditor_save_png: (a: number) => any;
+export const webphotoeditor_save_tiff_linear_srgb_16bit: (a: number) => any;
+export const webphotoeditor_save_tiff_linear_srgb_8bit: (a: number) => any;
+export const webphotoeditor_save_tiff_srgb_16bit: (a: number) => any;
+export const webphotoeditor_save_tiff_srgb_8bit: (a: number) => any;
 export const webphotoeditor_set_brightness_tone_curve: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => [number, number];
 export const webphotoeditor_set_lens_distortion_correction: (a: number, b: number) => [number, number];
 export const webphotoeditor_set_mask_range: (a: number, b: number, c: number, d: number) => [number, number];

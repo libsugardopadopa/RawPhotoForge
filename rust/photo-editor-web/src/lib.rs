@@ -1,4 +1,4 @@
-use photo_editor::{GpuProcessor, ImageFormat, PhotoEditor};
+use photo_editor::{GpuProcessor, ImageFormat, PhotoEditor, SaveImageFormat};
 
 use ndarray::{Array1, Array2};
 use std::sync::Arc;
@@ -219,18 +219,45 @@ impl WebPhotoEditor {
 
     pub async fn save_png(&self) -> Result<Vec<u8>, JsValue> {
         self.inner
-            .save(&ImageFormat::PNG)
+            .save(&SaveImageFormat::PNG)
             .await
             .map_err(|e| JsValue::from_str(&e.to_string()))
     }
 
     pub async fn save_jpeg(&self) -> Result<Vec<u8>, JsValue> {
         self.inner
-            .save(&ImageFormat::JPEG)
+            .save(&SaveImageFormat::JPEG)
             .await
             .map_err(|e| JsValue::from_str(&e.to_string()))
     }
 
+    pub async fn save_tiff_linear_srgb_16bit(&self) -> Result<Vec<u8>, JsValue> {
+        self.inner
+            .save(&SaveImageFormat::TiffLinearsRGB16Bit)
+            .await
+            .map_err(|e| JsValue::from_str(&e.to_string()))
+    }
+
+    pub async fn save_tiff_linear_srgb_8bit(&self) -> Result<Vec<u8>, JsValue> {
+        self.inner
+            .save(&SaveImageFormat::TiffLinearsRGB8Bit)
+            .await
+            .map_err(|e| JsValue::from_str(&e.to_string()))
+    }
+
+    pub async fn save_tiff_srgb_16bit(&self) -> Result<Vec<u8>, JsValue> {
+        self.inner
+            .save(&SaveImageFormat::TiffsRGB16Bit)
+            .await
+            .map_err(|e| JsValue::from_str(&e.to_string()))
+    }
+
+    pub async fn save_tiff_srgb_8bit(&self) -> Result<Vec<u8>, JsValue> {
+        self.inner
+            .save(&SaveImageFormat::TiffsRGB8Bit)
+            .await
+            .map_err(|e| JsValue::from_str(&e.to_string()))
+    }
     pub fn exif_json(&self) -> Result<String, JsValue> {
         serde_json::to_string(&self.inner.get_exif_hashmap())
             .map_err(|e| JsValue::from_str(&e.to_string()))

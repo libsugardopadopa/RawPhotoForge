@@ -62,7 +62,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // editor.set_vignette(-30).unwrap();
     editor.apply_adjustments().unwrap();
     let image_data = editor
-        .save(&photo_editor::image::ImageFormat::JPEG)
+        .save(&photo_editor::image::SaveImageFormat::JPEG)
         .await
         .unwrap();
 

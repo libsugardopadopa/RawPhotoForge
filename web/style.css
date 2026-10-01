@@ -228,7 +228,7 @@ body::before {
     background:
         linear-gradient(180deg, rgba(6, 8, 14, 0.98), rgba(11, 15, 28, 0.98));
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
+    border-radius: 0px;
     box-shadow:
         0 0 0 1px rgba(110, 168, 255, 0.08) inset,
         0 12px 40px rgba(0, 0, 0, 0.55),

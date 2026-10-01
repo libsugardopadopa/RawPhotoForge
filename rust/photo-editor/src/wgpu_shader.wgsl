@@ -336,6 +336,5 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
     rgb_vec4 = oklch_to_linear_srgb(oklch_vec4);
 
     // Final Output
-    let out_col = linear_to_srgb(rgb_vec4);
-    textureStore(image_out, xy, clamp(out_col, vec4(0.0), vec4(1.0)));
+    textureStore(image_out, xy, clamp(rgb_vec4, vec4(0.0), vec4(1.0)));
 }

@@ -45,6 +45,30 @@ impl ImageFormat {
     }
 }
 
+pub enum SaveImageFormat {
+    PNG,
+    JPEG,
+
+    TiffLinearsRGB16Bit,
+    TiffLinearsRGB8Bit,
+
+    TiffsRGB16Bit,
+    TiffsRGB8Bit,
+}
+
+impl SaveImageFormat {
+    pub fn to_str(&self) -> &str {
+        match self {
+            SaveImageFormat::JPEG => "jpeg",
+            SaveImageFormat::PNG => "png",
+            SaveImageFormat::TiffLinearsRGB16Bit => "tiff_linear_srgb_16bit",
+            SaveImageFormat::TiffLinearsRGB8Bit => "tiff_linear_srgb_8bit",
+            SaveImageFormat::TiffsRGB16Bit => "tiff_srgb_16bit",
+            SaveImageFormat::TiffsRGB8Bit => "tiff_srgb_8bit",
+        }
+    }
+}
+
 pub struct Image {
     pub texture: wgpu::Texture,
     pub texture_view: wgpu::TextureView,
@@ -479,33 +503,140 @@ fn read_image_and_exif(
     Ok((image, exif_data))
 }
 
-pub async fn write_image(
-    image: &Image,
-    image_format: &ImageFormat,
-) -> Result<Vec<u8>, PhotoEditorError> {
-    if let ImageFormat::Unknown = image_format {
-        return Err(PhotoEditorError::SaveImageUnsupportedFormat(
-            image_format.to_str().to_string(),
-        ));
-    }
+fn linear_srgb_to_srgb(value: f32) -> f32 {
+    let value = value.clamp(0.0, 1.0);
 
+    if value <= 0.0031308 {
+        value * 12.92
+    } else {
+        1.055 * value.powf(1.0 / 2.4) - 0.055
+    }
+}
+
+fn linear_srgb_to_srgb_vec(linear_srgb: Vec<f32>) -> Vec<f32> {
+    linear_srgb.into_iter().map(linear_srgb_to_srgb).collect()
+}
+
+pub async fn write_image_png_jpeg_and_tiff_srgb_8bit(
+    image: &Image,
+    image_format: &SaveImageFormat,
+) -> Result<Vec<u8>, PhotoEditorError> {
     let image_crate_format = match image_format {
-        ImageFormat::JPEG => image::ImageFormat::Jpeg,
-        ImageFormat::PNG => image::ImageFormat::Png,
-        ImageFormat::WEBP => image::ImageFormat::WebP,
-        ImageFormat::TIFF => image::ImageFormat::Tiff,
+        SaveImageFormat::JPEG => image::ImageFormat::Jpeg,
+        SaveImageFormat::PNG => image::ImageFormat::Png,
+        SaveImageFormat::TiffsRGB8Bit => image::ImageFormat::Tiff,
         _ => panic!(
             "Failed to convert to image crate format: {}",
             image_format.to_str()
         ),
     };
 
+    let linear_srgb = image.to_flat_vec_rgb().await?;
+
+    let srgb = linear_srgb_to_srgb_vec(linear_srgb);
+
+    let u8_vec: Vec<u8> = srgb
+        .into_iter()
+        .map(|v| (v.clamp(0.0, 1.0) * 255.0).round() as u8)
+        .collect();
+
+    let rgb_image = image::RgbImage::from_raw(image.width, image.height, u8_vec)
+        .expect("Failed to create 8-bit sRGB image from raw vec");
+
     let mut writer = Cursor::new(Vec::<u8>::new());
-    image
-        .to_u8_rgbimage()
-        .await?
+
+    rgb_image
         .write_to(&mut writer, image_crate_format)
         .map_err(PhotoEditorError::save)?;
 
     Ok(writer.into_inner())
+}
+
+pub async fn write_image_tiff_linear_srgb_16bit(
+    image: &Image,
+) -> Result<Vec<u8>, PhotoEditorError> {
+    let linear_srgb = image.to_flat_vec_rgb().await?;
+
+    let u16_vec: Vec<u16> = linear_srgb
+        .into_iter()
+        .map(|v| (v.clamp(0.0, 1.0) * 65535.0).round() as u16)
+        .collect();
+
+    let rgb_image = image::ImageBuffer::<image::Rgb<u16>, Vec<u16>>::from_raw(
+        image.width,
+        image.height,
+        u16_vec,
+    )
+    .expect("Failed to create 16-bit linear sRGB TIFF image from raw vec");
+
+    let mut writer = Cursor::new(Vec::<u8>::new());
+
+    rgb_image
+        .write_to(&mut writer, image::ImageFormat::Tiff)
+        .map_err(PhotoEditorError::save)?;
+
+    Ok(writer.into_inner())
+}
+
+pub async fn write_image_tiff_linear_srgb_8bit(image: &Image) -> Result<Vec<u8>, PhotoEditorError> {
+    let linear_srgb = image.to_flat_vec_rgb().await?;
+
+    let u8_vec: Vec<u8> = linear_srgb
+        .into_iter()
+        .map(|v| (v.clamp(0.0, 1.0) * 255.0).round() as u8)
+        .collect();
+
+    let rgb_image = image::RgbImage::from_raw(image.width, image.height, u8_vec)
+        .expect("Failed to create 8-bit linear sRGB TIFF image from raw vec");
+
+    let mut writer = Cursor::new(Vec::<u8>::new());
+
+    rgb_image
+        .write_to(&mut writer, image::ImageFormat::Tiff)
+        .map_err(PhotoEditorError::save)?;
+
+    Ok(writer.into_inner())
+}
+
+pub async fn write_image_tiff_srgb_16bit(image: &Image) -> Result<Vec<u8>, PhotoEditorError> {
+    let linear_srgb = image.to_flat_vec_rgb().await?;
+
+    let srgb = linear_srgb_to_srgb_vec(linear_srgb);
+
+    let u16_vec: Vec<u16> = srgb
+        .into_iter()
+        .map(|v| (v.clamp(0.0, 1.0) * 65535.0).round() as u16)
+        .collect();
+
+    let rgb_image = image::ImageBuffer::<image::Rgb<u16>, Vec<u16>>::from_raw(
+        image.width,
+        image.height,
+        u16_vec,
+    )
+    .expect("Failed to create 16-bit sRGB TIFF image from raw vec");
+
+    let mut writer = Cursor::new(Vec::<u8>::new());
+
+    rgb_image
+        .write_to(&mut writer, image::ImageFormat::Tiff)
+        .map_err(PhotoEditorError::save)?;
+
+    Ok(writer.into_inner())
+}
+
+pub async fn write_image(
+    image: &Image,
+    image_format: &SaveImageFormat,
+) -> Result<Vec<u8>, PhotoEditorError> {
+    match image_format {
+        SaveImageFormat::PNG | SaveImageFormat::JPEG | SaveImageFormat::TiffsRGB8Bit => {
+            write_image_png_jpeg_and_tiff_srgb_8bit(image, image_format).await
+        }
+
+        SaveImageFormat::TiffLinearsRGB16Bit => write_image_tiff_linear_srgb_16bit(image).await,
+
+        SaveImageFormat::TiffLinearsRGB8Bit => write_image_tiff_linear_srgb_8bit(image).await,
+
+        SaveImageFormat::TiffsRGB16Bit => write_image_tiff_srgb_16bit(image).await,
+    }
 }

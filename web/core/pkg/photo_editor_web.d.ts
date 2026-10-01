@@ -22,6 +22,10 @@ export class WebPhotoEditor {
     remove_mask(name: string): void;
     save_jpeg(): Promise<Uint8Array>;
     save_png(): Promise<Uint8Array>;
+    save_tiff_linear_srgb_16bit(): Promise<Uint8Array>;
+    save_tiff_linear_srgb_8bit(): Promise<Uint8Array>;
+    save_tiff_srgb_16bit(): Promise<Uint8Array>;
+    save_tiff_srgb_8bit(): Promise<Uint8Array>;
     /**
      * 明るさのトーンカーブを設定
      */
@@ -78,6 +82,10 @@ export interface InitOutput {
     readonly webphotoeditor_remove_mask: (a: number, b: number, c: number) => [number, number];
     readonly webphotoeditor_save_jpeg: (a: number) => any;
     readonly webphotoeditor_save_png: (a: number) => any;
+    readonly webphotoeditor_save_tiff_linear_srgb_16bit: (a: number) => any;
+    readonly webphotoeditor_save_tiff_linear_srgb_8bit: (a: number) => any;
+    readonly webphotoeditor_save_tiff_srgb_16bit: (a: number) => any;
+    readonly webphotoeditor_save_tiff_srgb_8bit: (a: number) => any;
     readonly webphotoeditor_set_brightness_tone_curve: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => [number, number];
     readonly webphotoeditor_set_lens_distortion_correction: (a: number, b: number) => [number, number];
     readonly webphotoeditor_set_mask_range: (a: number, b: number, c: number, d: number) => [number, number];

@@ -5,7 +5,7 @@ pub mod gpu_image_processing;
 pub mod image;
 pub mod interpolation;
 pub mod metadata;
-pub use crate::image::ImageFormat;
+pub use crate::image::{ImageFormat, SaveImageFormat};
 use errors::{InterpolationError, PhotoEditorError};
 pub use gpu_image_processing::GpuProcessor;
 use image::Image;
@@ -220,8 +220,8 @@ impl PhotoEditor {
         self.exif.to_hashmap()
     }
 
-    pub async fn save(&self, image_format: &ImageFormat) -> Result<Vec<u8>, PhotoEditorError> {
-        Ok(image::write_image(&self.image, image_format).await?) // async化と await を追加
+    pub async fn save(&self, image_format: &SaveImageFormat) -> Result<Vec<u8>, PhotoEditorError> {
+        Ok(image::write_image(&self.image, image_format).await?)
     }
 
     pub fn reset(&mut self) {
