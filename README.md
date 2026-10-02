@@ -2,7 +2,7 @@
 
 GPU Photo Editor Project
 
-### [⭐Try RawPhotoForge⭐](https://kingyo1205.github.io/RawPhotoForge/web/dist/index.html)
+### [⭐Try RawPhotoForge⭐](https://libsugardopadopa.github.io/RawPhotoForge/web/dist/index.html)
 
 RawPhotoForge is an open-source GPU photo editing project built with Rust, WebGPU, and WebAssembly.
 

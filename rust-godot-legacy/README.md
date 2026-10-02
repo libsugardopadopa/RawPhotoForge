@@ -68,7 +68,7 @@ The following instructions describe how to build the project from source on Linu
 ### Build Steps
 
 ```bash
-git clone https://github.com/kingyo1205/RawPhotoForge.git
+git clone https://github.com/libsugardopadopa/RawPhotoForge.git
 cd RawPhotoForge/rust-godot-legacy
 
 cargo build -r -p photo-editor-godot

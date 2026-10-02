@@ -43,7 +43,7 @@ RawPhotoForgeは**Pythonで書かれた**RAW現像ソフトです。
   例：`RawPhotoForge-v0.5.0.zip`
 
 - リリースページからダウンロード：  
-  [GitHub Releases](https://github.com/kingyo1205/RawPhotoForge/releases)
+  [GitHub Releases](https://github.com/libsugardopadopa/RawPhotoForge/releases)
 
 ※ GitHubの自動生成「Source code (zip/tar.gz)」ではなく、必ず上記の自作Assetを使用してください。
 
@@ -135,19 +135,19 @@ ExifTool は GPL 1.0以降 または Artistic License 1.0 のデュアルライ�
 
 （2025年確認 / PyPI 記載情報）
 
-| ライブラリ                                                     | ライセンス                         | 備考           |
-| -------------------------------------------------------------- | ---------------------------------- | -------------- |
-| [numpy](https://pypi.org/project/numpy/)                       | BSD                                | -              |
-| [slangpy](https://pypi.org/project/slangpy/)                   | Apache-2.0 WITH LLVM-exception     | -              |
-| [pillow](https://pypi.org/project/Pillow/)                     | MIT-CMU                            | -              |
-| [opencv-python](https://pypi.org/project/opencv-python/)       | Apache-2.0                         | -              |
-| [scipy](https://pypi.org/project/scipy/)                       | BSD                                | -              |
-| [lensfunpy](https://pypi.org/project/lensfunpy/)               | MIT                                | -              |
-| [rawpy](https://pypi.org/project/rawpy/)                       | MIT                                | -              |
-| [torch](https://pypi.org/project/torch/)                       | BSD                                | -              |
-| [sam2](https://pypi.org/project/sam2/)                         | Apache 2.0                         | -              |
-| [matplotlib](https://pypi.org/project/matplotlib/)             | Python Software Foundation License | -              |
-| [photo-metadata](https://pypi.org/project/photo-metadata/)     | MIT                                | 自作ライブラリ |
+| ライブラリ                                                 | ライセンス                         | 備考           |
+| ---------------------------------------------------------- | ---------------------------------- | -------------- |
+| [numpy](https://pypi.org/project/numpy/)                   | BSD                                | -              |
+| [slangpy](https://pypi.org/project/slangpy/)               | Apache-2.0 WITH LLVM-exception     | -              |
+| [pillow](https://pypi.org/project/Pillow/)                 | MIT-CMU                            | -              |
+| [opencv-python](https://pypi.org/project/opencv-python/)   | Apache-2.0                         | -              |
+| [scipy](https://pypi.org/project/scipy/)                   | BSD                                | -              |
+| [lensfunpy](https://pypi.org/project/lensfunpy/)           | MIT                                | -              |
+| [rawpy](https://pypi.org/project/rawpy/)                   | MIT                                | -              |
+| [torch](https://pypi.org/project/torch/)                   | BSD                                | -              |
+| [sam2](https://pypi.org/project/sam2/)                     | Apache 2.0                         | -              |
+| [matplotlib](https://pypi.org/project/matplotlib/)         | Python Software Foundation License | -              |
+| [photo-metadata](https://pypi.org/project/photo-metadata/) | MIT                                | 自作ライブラリ |
 
 
 ---

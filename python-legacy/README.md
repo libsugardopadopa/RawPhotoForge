@@ -9,7 +9,7 @@ It also supports **AI masks (SAM) for partial adjustments**, lens correction via
 
 ---
 
-> 📕 [README_Japanese](https://github.com/kingyo1205/RawPhotoForge/blob/main/python-legacy/README_Japanese.md)
+> 📕 [README_Japanese](https://github.com/libsugardopadopa/RawPhotoForge/blob/main/python-legacy/README_Japanese.md)
 
 ---
 
@@ -53,7 +53,7 @@ To run it, you need **Python 3.11 or later** and an environment where **slang (s
   Example: `RawPhotoForge-v0.5.0.zip`
 
 * Download from the Release page:
-  [GitHub Releases](https://github.com/kingyo1205/RawPhotoForge/releases)
+  [GitHub Releases](https://github.com/libsugardopadopa/RawPhotoForge/releases)
 
 ※ Do **not** use GitHub’s auto-generated “Source code (zip/tar.gz)”.
 Please make sure to use the custom Asset above.
